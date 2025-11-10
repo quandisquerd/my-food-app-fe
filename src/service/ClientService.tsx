@@ -4,8 +4,8 @@ const API = import.meta.env.VITE_API_URL;
 
 
 const clientApi = createApi({
-    reducerPath: 'album',
-    tagTypes: ['Album'],
+    reducerPath: 'client',
+    tagTypes: ['Client'],
     baseQuery: fetchBaseQuery({
         baseUrl: API,
         fetchFn: async (...args) => {
@@ -18,11 +18,47 @@ const clientApi = createApi({
             query: () => ({
                 url: `/album`,
             }),
-            providesTags: ['Album'],
-        })
+            providesTags: ['Client'],
+        }),
+        getLocationShip: builder.query({
+            query: ({ lat, lng }) => ({
+                url: `/store/distance?lat=${lat}&lng=${lng}`,
+            }),
+            providesTags: ['Client'],
+        }),
+        getAllFoods: builder.query({
+            query: () => ({
+                url: `foods`,
+            }),
+            providesTags: ['Client'],
+        }),
+        getFoodById: builder.query({
+            query: ({ id }) => ({
+                url: `foods/${id}`,
+            }),
+            providesTags: ['Client'],
+        }),
+        // create a new order
+        createOrder: builder.mutation({
+            query: (body) => ({
+                url: `orders`,
+                method: 'POST',
+                body
+            }),
+            invalidatesTags: ['Client']
+        }),
+        // bulk create order items
+        createOrderItemsBulk: builder.mutation({
+            query: (body) => ({
+                url: `order-items/bulk`,
+                method: 'POST',
+                body
+            }),
+            invalidatesTags: ['Client']
+        }),
     })
 })
 
 
-export const { useGetAlbumQuery } = clientApi
+export const { useGetAlbumQuery, useGetLocationShipQuery, useGetAllFoodsQuery, useGetFoodByIdQuery, useCreateOrderMutation, useCreateOrderItemsBulkMutation } = clientApi
 export default clientApi

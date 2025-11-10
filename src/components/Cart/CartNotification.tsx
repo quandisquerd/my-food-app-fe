@@ -4,15 +4,16 @@ const CartNotification = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleCartUpdate = () => {
+    const handleItemAdded = () => {
       setVisible(true);
 
       // Ẩn sau 3 giây
       setTimeout(() => setVisible(false), 3000);
     };
 
-    window.addEventListener("cartUpdated", handleCartUpdate);
-    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
+    // show notification only when an item is added from product modal
+    window.addEventListener("cartItemAdded", handleItemAdded as EventListener);
+    return () => window.removeEventListener("cartItemAdded", handleItemAdded as EventListener);
   }, []);
 
   if (!visible) return null;

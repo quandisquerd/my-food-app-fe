@@ -9,7 +9,7 @@ const ClientLayout = () => {
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
-        <>
+        <div className="">
             <header className="p-5 bg-gray-700 text-white mb-5 flex items-center relative">
                 <button
                     className="md:hidden p-2"
@@ -52,7 +52,7 @@ const ClientLayout = () => {
                                 <House /> Trang chủ
                             </li>
                         </Link>
-                        <Link to="/cart" onClick={() => setOpenMenu(false)}>
+                        <Link to="/order" onClick={() => setOpenMenu(false)}>
                             <li className="flex items-center gap-2 py-2 md:px-5 whitespace-nowrap">
                                 <ShoppingCart /> Đơn hàng
                             </li>
@@ -83,7 +83,7 @@ const ClientLayout = () => {
             <footer className="p-4 text-center text-gray-500 text-sm">
                 © Meo Quán - Tu Hoàng - Hà Nội
             </footer>
-        </>
+        </div>
     );
 };
 

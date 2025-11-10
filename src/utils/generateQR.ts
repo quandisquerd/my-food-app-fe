@@ -1,11 +1,11 @@
-// utils/generateQR.ts
+const accountBank = import.meta.env.VITE_ACCOUNT_BANK;
 export const generateVietQR = (
   account: string,
   amount?: number,
   note?: string
 ) => {
-  const bankCode = "VCB"; // Timo dùng OCB
-  const template = "compact"; // có thể đổi sang 'logo' hoặc 'print' nếu muốn
+  const bankCode = accountBank; 
+  const template = "compact"; 
   const params = new URLSearchParams();
 
   if (amount) params.append("amount", amount.toString());

@@ -2,18 +2,21 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { generateVietQR } from "../../utils/generateQR";
-
+const accountnumber = import.meta.env.VITE_ACCOUNT_NUMBER;
+const accountname = import.meta.env.VITE_ACCOUNT_NAME;
 
 interface CheckoutProps {
     isOpen: boolean;
     onClose: () => void;
     totalAmount: number;
+    // optional callback when user confirms they have paid via QR
+    onPaid?: () => void;
 }
 
-const Checkout = ({ isOpen, onClose, totalAmount }: CheckoutProps) => {
+const Checkout = ({ isOpen, onClose, totalAmount, onPaid }: CheckoutProps) => {
     const [qrUrl, setQrUrl] = useState("");
-    const accountNumber = "1021697711"; // 💳 Số tài khoản Timo (OCB)
-    const accountName = "PHAM DUC HOANG";    // 🧾 Tên chủ tài khoản
+    const accountNumber = accountnumber;
+    const accountName = accountname;
 
     useEffect(() => {
         if (isOpen) {
@@ -52,7 +55,7 @@ const Checkout = ({ isOpen, onClose, totalAmount }: CheckoutProps) => {
                         Tổng thanh toán: <span className="text-red-500">{formatCurrency(totalAmount)}</span>
                     </h3>
                     <p className="text-sm text-gray-500">
-                        Quét mã QR bên dưới bằng ứng dụng ngân hàng hoặc ZaloPay để thanh toán
+                        Quét mã QR bên dưới bằng ứng dụng ngân hàng!
                     </p>
 
                     {qrUrl ? (
@@ -66,14 +69,14 @@ const Checkout = ({ isOpen, onClose, totalAmount }: CheckoutProps) => {
                     )}
 
 
-                    <div className="text-center mt-3">
-                        <p className="font-medium">{accountName}</p>
-                        <p className="text-gray-500 text-sm">{accountNumber} (Timo - OCB)</p>
-                    </div>
-
                     <button
                         className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition-all"
-                        onClick={() => alert("Cảm ơn bạn! Hãy hoàn tất chuyển khoản.")}
+                        onClick={() => {
+                            // notify parent that payment was completed
+                            if (onPaid) onPaid();
+                            // default behavior: close modal
+                            onClose();
+                        }}
                     >
                         ✅ Đã thanh toán
                     </button>
